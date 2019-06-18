@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t konrness/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run konrness/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t konrness/fibonacci-client ./client
+  - docker build -t konrness/fibonacci-nginx ./nginx
+  - docker build -t konrness/fibonacci-server ./server
+  - docker build -t konrness/fibonacci-worker ./worker
+  
+  # Log in to the Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Push images to Docker Hub
+  - docker push konrness/fibonacci-client
+  - docker push konrness/fibonacci-nginx
+  - docker push konrness/fibonacci-server
+  - docker push konrness/fibonacci-worker
+  
