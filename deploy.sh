@@ -1,3 +1,5 @@
+set -e
+
 docker build -t konrness/fibonacci-client:latest -t konrness/fibonacci-client:$SHA -f ./client/Dockerfile ./client
 docker build -t konrness/fibonacci-server:latest -t konrness/fibonacci-server:$SHA -f ./server/Dockerfile  ./server
 docker build -t konrness/fibonacci-worker:latest -t konrness/fibonacci-worker:$SHA -f ./worker/Dockerfile  ./worker
