@@ -13,6 +13,6 @@ docker push konrness/fibonacci-server:$SHA
 docker push konrness/fibonacci-worker:$SHA
 
 kubectl apply -f k8s
-kubectl set image deployments/client-deployment server=konrness/fibonacci-client:$SHA
+kubectl set image deployments/client-deployment client=konrness/fibonacci-client:$SHA
 kubectl set image deployments/server-deployment server=konrness/fibonacci-server:$SHA
-kubectl set image deployments/worker-deployment server=konrness/fibonacci-worker:$SHA
+kubectl set image deployments/worker-deployment worker=konrness/fibonacci-worker:$SHA
