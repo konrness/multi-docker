@@ -1,0 +1,14 @@
+cd client
+docker build -t konrness/fibonacci-client:v5 .
+docker push konrness/fibonacci-client:v5
+
+docker-compose up --build
+
+kubectl apply -f k8s
+
+kubectl get deployment
+kubectl get services
+kubectl get pv
+kubectl get pvc
+
+kubectl create secret generic pgpassword --from-literal PGPASSWORD=postgres
