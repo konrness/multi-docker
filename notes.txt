@@ -12,3 +12,27 @@ kubectl get pv
 kubectl get pvc
 
 kubectl create secret generic pgpassword --from-literal PGPASSWORD=postgres
+
+@see: https://kubernetes.github.io/ingress-nginx/deploy/
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+minikube addons enable ingress
+
+# for GCE:
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+
+
+# setting up Google Cloud Travis CLI service account
+docker run -it -v $(pwd):/app ruby:2.3 sh
+gem install travis
+travis login
+cd /app
+travis encrypt-file service-account.json -r konrness/multi-docker
+rm service-account.json
+git add service-account.json.enc
+
+# setting up ingress-nginx with Helm for Google Cloud (run this in the Cloud Shell)
+curl -L https://git.io/get_helm.sh | bash
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+helm init --service-account tiller --upgrade
+helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
