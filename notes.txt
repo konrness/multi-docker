@@ -36,3 +36,13 @@ kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 helm init --service-account tiller --upgrade
 helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
+
+# dev to prod workflow
+- check out branch
+- make changes
+- commit changes
+- push to github branch
+- create pr
+- wait for test to show up 'green'
+- merge pr
+- see changes appear in prod
